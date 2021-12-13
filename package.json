@@ -4,7 +4,7 @@
   "description": "A chat application made using socket.io",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "author": "Himanshu Yadav",
   "license": "ISC",
