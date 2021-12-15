@@ -1,12 +1,17 @@
 const express = require("express");
+const router = require("./routes");
 const app = express();
-const http = require("http").Server(app);
-const io = require("socket.io")(http, {
+const http = require("http");
+const server = http.createServer(app);
+const socketio = require("socket.io");
+const io = socketio(server, {
   cors: {
     origin: "*",
   },
 });
 
+app.use(router);
+const PORT = process.env.PORT || 4001;
 let users = [];
 
 io.on("connection", (socket) => {
@@ -31,7 +36,7 @@ io.on("connection", (socket) => {
         username: data.name,
         message: `${data.name} Joined`,
       });
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       io.to(socket.id).emit("SendtoChat", {
         username: "",
         message: "Welcome !!!!",
@@ -72,4 +77,4 @@ io.on("connection", (socket) => {
   });
 });
 
-http.listen(4001, () => console.log(`Listening on port 4001`));
+server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
