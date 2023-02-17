@@ -21,27 +21,30 @@ io.on("connection", (socket) => {
     console.log(users.indexOf(data));
     if (users.indexOf(data.name) > -1) {
       //Already Present
-      console.log("YE QU");
+     // console.log("YE QU");
       io.to(socket.id).emit("SendtoUser", {
         username: "NoName",
-
         message: "User Name already present",
       });
     } else {
       io.to(socket.id).emit("SendtoUser", {
+        id: new Date().toLocaleTimeString(),
         username: data,
         message: "Welcome !!!!",
       });
       socket.broadcast.emit("SendtoUser", {
+        id: new Date().toLocaleTimeString(),
         username: data.name,
         message: `${data.name} Joined`,
       });
       // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       io.to(socket.id).emit("SendtoChat", {
+        id: new Date().toLocaleTimeString(),
         username: "",
         message: "Welcome !!!!",
       });
       socket.broadcast.emit("SendtoChat", {
+        id: new Date().toLocaleTimeString(),
         username: "",
         message: `${data.name} Joined`,
       });
@@ -56,12 +59,14 @@ io.on("connection", (socket) => {
     // ***********************************************************
 
     socket.on("SendtoServer", (data) => {
-      console.log(data);
+     // console.log(data);
       io.to(socket.id).emit("SendtoChat", {
+        id:new Date().toLocaleTimeString(),
         username: "You",
         message: data.input,
       });
       socket.broadcast.emit("SendtoChat", {
+        id: new Date().toLocaleTimeString(),
         username: data.name,
         message: data.input,
       });
@@ -69,7 +74,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", (data) => {
-    console.log("user left");
+   // console.log("user left");
     socket.broadcast.emit("SendtoChat", {
       username: "",
       message: "A User Left",
